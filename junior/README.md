@@ -58,3 +58,32 @@ and pull request triggers, and ensure a script failure fails the workflow.
 
 Stop after approximately one hour. If anything remains unresolved, submit
 your progress, what you tried, and what you would investigate next.
+
+## Bryan's findings
+
+### Task 1:
+- Ran script
+- Saw error message: `task-1-script/random-data.sh: line 10: echo⠀Combined count: 28: command not found`
+- Checking script on Visual Studio Code locally, noticed a couple issues:
+
+| Line | Description |
+| ----------- | ----------- |
+| 10 | right after "echo" there's a character that breaks the "echo" command. (This wasn't visible using vim or cat, only in VS Code) |
+| 12 | variable $bytes-base64 instead of $bytes_base64 |
+| 13 | "ehho" instead of "echo" |
+
+The script uses openSSL to create secure random bytes and store the result into "bytes". Then uses base64 to encode "bytes" into variable "bytes_base64". Then uses wc to count the bytes (the -c flag) for both both "bytes" and "bytes_base64". Then it adds them together and finally prints out every variable except "bytes". The script is set to fail on errors and uses bash as the interpreter.
+
+### Task 2:
+- Ran Script, fails with error `Error: configuration file not found: service.conf`
+- Inspecting script, line 4:
+`config_file="service.conf"`
+
+This only works inside task-2-configuration/. I fixed it by getting the script directory from ${BASH_SOURCE[0]} so I get the service.conf file regardless of where I execute the script from. Tested it from multiple paths outside the git directory and it worked every time. The provided script already printed a message if the config file wasn't found, and exit 1 as the nonzero status.
+
+### Task 3:
+- Checked Actions logs in original repo
+- Spotted error message: **"Unable to resolve action `actions/checkout@v9`, unable to find version `v9`"**. Latest version based on [documentation](https://github.com/actions/checkout/releases) is v7.0.1. Pinned to version d23441a48e516b6c34aea4fa41551a30e30af803 #v6.1.0
+- I was able to find the script from the original [Actions run](https://github.com/ecooke-macu/homework/actions/runs/42875430622/workflow) so I recreated it.
+- Set ./junior as the working directory
+- Fix script names, as they were incorrect (count-files and check-service instead of random-data and show-service)
