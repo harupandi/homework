@@ -85,3 +85,7 @@ This only works inside task-2-configuration/. I fixed it by getting the script d
 - Checked Actions logs in original repo
 - Spotted error message: **"Unable to resolve action `actions/checkout@v9`, unable to find version `v9`"**. Latest version based on [documentation](https://github.com/actions/checkout/releases) is v7.0.1 
 - I was unable to find the script inside the original repository, but based on the Github Actions runs, I'd change actions/checkout@v9 to a stable v6 or v7 or even pinning to a SHA to avoid supply-chain attacks.
+
+UPDATE: I found the original workflow file in the Actions runs: https://github.com/ecooke-macu/homework/actions/runs/42875430622/workflow
+
+I fixed it by updating line 15 with the following: `uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 #v6.1.0`
