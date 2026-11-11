@@ -22,8 +22,8 @@ jobs:
 
       - name: Run script exercise
         shell: bash
-        run: bash task-1-script/count-files.sh
+        run: bash task-1-script/random-data.sh
 
       - name: Run configuration exercise
         shell: bash
-        run: bash task-2-configuration/check-service.sh
+        run: bash task-2-configuration/show-service.sh
